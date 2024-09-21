@@ -25,10 +25,14 @@ void insert(Node* &head, Node* &tail, int id, string name) {
   if (head == NULL) {
     head = newNode;
     tail = newNode;
+    head->next = head;
+    head->prev = head;
   } else {
     head->next = newNode;
     newNode->prev = head;
     head = newNode;
+    newNode->next = tail;
+    tail->prev = newNode;
   }
 }
 
@@ -42,6 +46,8 @@ void insertNodeByPosition(Node* &head, Node* &tail, int id, string name, int pos
   if (tail == NULL) {
     head = newNode;
     tail = newNode;
+    head->next = head;
+    head->prev = head;
   } else {
     Node* temp = head;
     for (int i = 0; i < position; i++) {
@@ -50,6 +56,7 @@ void insertNodeByPosition(Node* &head, Node* &tail, int id, string name, int pos
     newNode->next = temp->next;
     temp->next = newNode;
     newNode->prev = temp;
+    newNode->next->prev = newNode;
   }
 }
 
@@ -79,12 +86,13 @@ void insertNodeAfterById (Node* &head, Node* &tail, int id, string name, int idA
     tail = newNode;
   } else {
     Node* temp = tail;
-    while (temp->id != idAfter) {
+    while (temp->id != idAfter && temp != NULL && temp != head) {
       temp = temp->next;
     }
     newNode->next = temp->next;
     temp->next = newNode;
     newNode->prev = temp;
+    newNode->next->prev = newNode;
   }
 }
 
@@ -93,7 +101,7 @@ void deleteNodeAfterById (Node* &head, Node* &tail, int idAfter) {
     cout << "List is empty" << endl;
   } else {
     Node* temp = tail;
-    while (temp->id != idAfter) {
+    while (temp->id != idAfter && temp != NULL && temp != head) {
       temp = temp->next;
     }
     Node* temp2 = temp->next;
@@ -109,15 +117,16 @@ void printListWithKeys(Node* tail) {
   } else {
     Node* temp = tail;
     int key = 0;
+    cout << temp->id << " " << temp-> name << endl;
     key = getch();
     while (key != ESC && key != ENTER && temp != NULL) {
       cout << temp->id << " " << temp->name << endl;
+      key = getch();
       if (key == UP) {
         temp = temp->next;
       } else if (key == DOWN) {
         temp = temp->prev;
       }
-      key = getch();
     }
   }
 }
