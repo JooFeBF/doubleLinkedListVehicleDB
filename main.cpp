@@ -53,10 +53,10 @@ void insertNodeByPosition(Node* &head, Node* &tail, int id, string name, int pos
     for (int i = 0; i < position; i++) {
       temp = temp->prev;
     }
-    newNode->next = temp->next;
-    temp->next = newNode;
-    newNode->prev = temp;
-    newNode->next->prev = newNode;
+    temp->prev->next = newNode;
+    newNode->prev = temp->prev;
+    temp->prev = newNode;
+    newNode->next = temp;
   }
 }
 
